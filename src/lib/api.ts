@@ -26,6 +26,8 @@ export const api = {
   listOpenTabs: () => invoke<Tab[]>("list_open_tabs"),
   createTab: (cashierId: number, tableIdentifier: string) =>
     invoke<Tab>("create_tab", { cashierId, tableIdentifier }),
+  deleteTab: (transactionId: number) =>
+    invoke<void>("delete_tab", { transactionId }),
 
   // menu (REQ-2.x)
   listMenuItems: (includeInactive: boolean) =>

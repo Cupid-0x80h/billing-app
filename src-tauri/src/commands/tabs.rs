@@ -151,6 +151,48 @@ pub fn create_tab(
     create_tab_core(&conn, cashier_id, &table_identifier)
 }
 
+/// Remove an open tab — e.g. a customer asked about prices and left without
+/// ordering. Only 'Open' tabs can be deleted; closed bills are permanent
+/// history (Paid/Credit rows feed the reports and ledger).
+pub(crate) fn delete_tab_core(conn: &Connection, tx_id: i64) -> Result<(), String> {
+    let status: Option<String> = conn
+        .query_row("SELECT status FROM Transactions WHERE id = ?1", [tx_id], |r| {
+            r.get(0)
+        })
+        .optional()
+        .map_err(|e| format!("Database error: {e}"))?;
+
+    match status.as_deref() {
+        None => Err("Tab not found".to_string()),
+        Some("Open") => {
+            // TransactionItems has ON DELETE CASCADE (SRS 5.4), so the cart
+            // lines go with it; foreign_keys pragma is ON.
+            let changed = conn
+                .execute(
+                    "DELETE FROM Transactions WHERE id = ?1 AND status = 'Open'",
+                    [tx_id],
+                )
+                .map_err(|e| format!("Failed to delete tab: {e}"))?;
+            if changed == 0 {
+                return Err("Tab is no longer open".to_string());
+            }
+            Ok(())
+        }
+        Some(_) => Err(
+            "Only open tabs can be deleted — closed bills are part of the history".to_string(),
+        ),
+    }
+}
+
+#[tauri::command]
+pub fn delete_tab(state: State<'_, AppState>, transaction_id: i64) -> Result<(), String> {
+    let conn = state
+        .conn
+        .lock()
+        .map_err(|_| "Database unavailable".to_string())?;
+    delete_tab_core(&conn, transaction_id)
+}
+
 #[tauri::command]
 pub fn list_open_tabs(state: State<'_, AppState>) -> Result<Vec<Tab>, String> {
     let conn = state

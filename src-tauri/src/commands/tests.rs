@@ -10,7 +10,7 @@ use crate::commands::menu::{
     create_menu_item_core, delete_menu_item_core, list_menu_items_core, update_menu_item_core,
 };
 use crate::commands::reports::{list_transactions_core, range_summary_core, settle_credit_core};
-use crate::commands::tabs::{create_tab_core, list_open_tabs_core};
+use crate::commands::tabs::{create_tab_core, delete_tab_core, list_open_tabs_core};
 use crate::commands::users::{
     create_user_core, delete_user_core, list_users_core, reset_user_password_core,
     set_user_role_core,
@@ -522,4 +522,75 @@ fn backup_and_restore_roundtrip() {
     let _ = fs::remove_file(format!("{}-shm", main_path.display()));
     let _ = fs::remove_file(&dest);
     let _ = fs::remove_file(&bogus);
+}
+
+// ─── Tab deletion (customer inquiry / walk-out without an order) ────────────
+
+#[test]
+fn delete_open_tab_with_cascade_and_guards() {
+    let db = TempDb::new();
+    let admin = admin_id(&db);
+
+    // Tab with items and a plain empty tab
+    let doomed = create_tab_core(&db.conn, admin, "Walk-in 1").unwrap();
+    add_cart_item_core(&db.conn, doomed.id, item_id(&db, "Chiya")).unwrap();
+    add_cart_item_core(&db.conn, doomed.id, item_id(&db, "Chiya")).unwrap();
+    let keeper = create_tab_core(&db.conn, admin, "Table 9").unwrap();
+
+    // Deleting removes the tab AND cascades its cart lines
+    delete_tab_core(&db.conn, doomed.id).unwrap();
+    let open = list_open_tabs_core(&db.conn).unwrap();
+    assert_eq!(open.len(), 1);
+    assert_eq!(open[0].table_identifier, "Table 9");
+    let orphans: i64 = db
+        .conn
+        .query_row(
+            "SELECT COUNT(*) FROM TransactionItems WHERE transaction_id = ?1",
+            [doomed.id],
+            |r| r.get(0),
+        )
+        .unwrap();
+    assert_eq!(orphans, 0);
+    let row_count: i64 = db
+        .conn
+        .query_row(
+            "SELECT COUNT(*) FROM Transactions WHERE id = ?1",
+            [doomed.id],
+            |r| r.get(0),
+        )
+        .unwrap();
+    assert_eq!(row_count, 0);
+
+    // Guards: double-delete and unknown id
+    assert_eq!(
+        delete_tab_core(&db.conn, doomed.id).unwrap_err(),
+        "Tab not found"
+    );
+    assert!(delete_tab_core(&db.conn, 99999).is_err());
+
+    // Closed bills can never be deleted (reports/ledger integrity)
+    add_cart_item_core(&db.conn, keeper.id, item_id(&db, "Chiya")).unwrap();
+    checkout_core(
+        &db.conn,
+        &CheckoutInput {
+            transaction_id: keeper.id,
+            status: "Paid".to_string(),
+            payment_method: Some("Cash".to_string()),
+            cash_amount: None,
+            online_amount: None,
+            customer_name: None,
+        },
+    )
+    .unwrap();
+    let err = delete_tab_core(&db.conn, keeper.id).unwrap_err();
+    assert!(err.contains("history"));
+    let still_there: i64 = db
+        .conn
+        .query_row(
+            "SELECT COUNT(*) FROM Transactions WHERE id = ?1",
+            [keeper.id],
+            |r| r.get(0),
+        )
+        .unwrap();
+    assert_eq!(still_there, 1);
 }

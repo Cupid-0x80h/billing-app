@@ -39,6 +39,7 @@ pub fn run() {
             commands::auth::login,
             commands::auth::change_password,
             commands::tabs::create_tab,
+            commands::tabs::delete_tab,
             commands::tabs::list_open_tabs,
             commands::menu::list_menu_items,
             commands::cart::list_cart_lines,

@@ -6,6 +6,7 @@ import MenuGrid from "../components/MenuGrid";
 import CartPanel from "../components/CartPanel";
 import CheckoutModal from "../components/CheckoutModal";
 import NewTabModal from "../components/NewTabModal";
+import ConfirmModal from "../components/ConfirmModal";
 import Reports from "./Reports";
 import MenuAdmin from "./MenuAdmin";
 import UsersAdmin from "./UsersAdmin";
@@ -40,6 +41,7 @@ export default function Dashboard({
   const [lines, setLines] = useState<CartLine[]>([]);
   const [newTabOpen, setNewTabOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [tabToDelete, setTabToDelete] = useState<Tab | null>(null);
   const [flash, setFlash] = useState<Flash | null>(null);
   const [page, setPage] = useState<Page>("pos");
   const flashSeq = useRef(0);
@@ -147,6 +149,24 @@ export default function Dashboard({
     showFlash("success", `Opened “${tab.tableIdentifier}”`);
   }
 
+  /** Delete an open tab (walk-out / price inquiry without an order). */
+  async function confirmDeleteTab() {
+    if (!tabToDelete) return;
+    try {
+      await api.deleteTab(tabToDelete.id);
+      showFlash("success", `Tab “${tabToDelete.tableIdentifier}” deleted`);
+      if (selectedId === tabToDelete.id) {
+        setSelectedId(null);
+        setLines([]);
+      }
+      setTabToDelete(null);
+      await refreshTabs();
+    } catch (e) {
+      setTabToDelete(null);
+      showFlash("error", errMsg(e));
+    }
+  }
+
   async function handleCheckoutConfirm(payload: CheckoutPayload) {
     const res = await api.checkout(payload);
     setCheckoutOpen(false);
@@ -231,6 +251,7 @@ export default function Dashboard({
               selectedId={selectedId}
               onSelect={(id) => void handleSelect(id)}
               onNew={() => setNewTabOpen(true)}
+              onDelete={(tab) => setTabToDelete(tab)}
             />
 
             <MenuGrid
@@ -263,6 +284,31 @@ export default function Dashboard({
               lines={lines}
               onClose={() => setCheckoutOpen(false)}
               onConfirm={handleCheckoutConfirm}
+            />
+          )}
+          {tabToDelete && (
+            <ConfirmModal
+              title={`Delete “${tabToDelete.tableIdentifier}”?`}
+              confirmLabel="Delete tab"
+              onClose={() => setTabToDelete(null)}
+              onConfirm={confirmDeleteTab}
+              message={
+                tabToDelete.itemCount > 0 ? (
+                  <span>
+                    This tab has{" "}
+                    <b>
+                      {tabToDelete.itemCount} item(s) worth {npr(tabToDelete.total)}
+                    </b>
+                    . Deleting it removes the cart permanently. (Settled bills are
+                    never affected.)
+                  </span>
+                ) : (
+                  <span>
+                    No items were added — this tab was likely opened just to answer
+                    a price inquiry. Nothing will be lost.
+                  </span>
+                )
+              }
             />
           )}
         </>

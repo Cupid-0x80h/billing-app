@@ -1,6 +1,6 @@
 [package]
 name = "billing-system"
-version = "0.1.0"
+version = "0.1.1"
 description = "Offline Local POS & Billing System"
 authors = ["cupid"]
 edition = "2024"
