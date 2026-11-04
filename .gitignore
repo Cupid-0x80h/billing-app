@@ -26,3 +26,6 @@ src-tauri/gen/schemas/
 *.njsproj
 *.sln
 *.sw?
+
+# Local Windows build workspace (4.8 GB of copies/installers) — never commit
+Default Project/

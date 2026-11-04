@@ -114,22 +114,20 @@ pub fn change_password(
 mod tests {
     use super::*;
     use std::path::PathBuf;
-    use std::time::{SystemTime, UNIX_EPOCH};
 
     /// Open a fresh temp database (auto-seeded with admin/admin).
     fn temp_db() -> (Connection, Vec<PathBuf>) {
-        let nanos = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_nanos();
-        let path = std::env::temp_dir().join(format!("billing_test_{nanos}.db"));
+        let path = crate::testutil::unique_db_path();
         let conn = crate::db::open_and_migrate(&path).expect("open temp db");
         let files = [path.clone(), PathBuf::from(format!("{}-wal", path.display())), PathBuf::from(format!("{}-shm", path.display()))]
             .to_vec();
         (conn, files)
     }
 
-    fn cleanup(files: &[PathBuf]) {
+    /// Close the connection first, then remove the temp files — Windows cannot
+    /// delete a SQLite file while a connection still holds it open.
+    fn cleanup(conn: Connection, files: &[PathBuf]) {
+        drop(conn);
         for f in files {
             let _ = std::fs::remove_file(f);
         }
@@ -142,7 +140,7 @@ mod tests {
         assert_eq!(user.username, "admin");
         assert_eq!(user.role, "admin");
         assert!(user.must_change_password);
-        cleanup(&files);
+        cleanup(conn, &files);
     }
 
     #[test]
@@ -152,7 +150,7 @@ mod tests {
         let e2 = login_core(&conn, "ghost", "wrong").unwrap_err();
         assert_eq!(e1, e2);
         assert_eq!(e1, "Invalid username or password");
-        cleanup(&files);
+        cleanup(conn, &files);
     }
 
     #[test]
@@ -171,6 +169,6 @@ mod tests {
 
         // Weak password rejected
         assert!(change_password_core(&conn, user.id, "newpass", "123").is_err());
-        cleanup(&files);
+        cleanup(conn, &files);
     }
 }
