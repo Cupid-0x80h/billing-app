@@ -23,6 +23,7 @@ export default function MenuAdmin({
   notify: (kind: Kind, msg: string) => void;
 }) {
   const [items, setItems] = useState<MenuItem[]>([]);
+  const [query, setQuery] = useState("");
   const [form, setForm] = useState<FormState | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +32,17 @@ export default function MenuAdmin({
     () => Array.from(new Set(items.map((i) => i.category))).sort(),
     [items],
   );
+
+  /** Case-insensitive dish search across name and category (incl. hidden items). */
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (q === "") return items;
+    return items.filter(
+      (i) =>
+        i.name.toLowerCase().includes(q) ||
+        i.category.toLowerCase().includes(q),
+    );
+  }, [items, query]);
 
   async function load() {
     try {
@@ -116,13 +128,38 @@ export default function MenuAdmin({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-slate-100">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2.5">
+      <div className="flex flex-wrap items-center gap-3 border-b border-slate-200 bg-white px-4 py-2.5">
         <div>
           <h2 className="text-sm font-semibold text-slate-700">Menu Management</h2>
           <p className="text-xs text-slate-400">
             {items.length} items · {categories.length} categories
+            {query.trim() !== "" && ` · ${visible.length} matching`}
           </p>
         </div>
+
+        <div className="relative ml-auto min-w-0 flex-1 sm:max-w-xs">
+          <svg
+            className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              d="M9 3.5a5.5 5.5 0 1 0 3.4 9.84l3.08 3.08a.75.75 0 1 0 1.06-1.06l-3.08-3.08A5.5 5.5 0 0 0 9 3.5Zm-3.5 5.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0Z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search dishes…"
+            aria-label="Search menu dishes"
+            className="w-full rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-8 pr-2 text-sm outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+          />
+        </div>
+
         <button
           onClick={openCreate}
           className="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-indigo-500"
@@ -144,7 +181,7 @@ export default function MenuAdmin({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {items.map((item) => (
+              {visible.map((item) => (
                 <tr key={item.id} className={item.isActive ? "hover:bg-slate-50" : "bg-slate-50/60 opacity-70"}>
                   <td className="px-3 py-2 font-medium text-slate-800">{item.name}</td>
                   <td className="px-3 py-2">
@@ -193,6 +230,29 @@ export default function MenuAdmin({
                   </td>
                 </tr>
               ))}
+              {visible.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-3 py-8 text-center text-sm text-slate-400">
+                    {query.trim() !== "" ? (
+                      <>
+                        No dishes match{" "}
+                        <span className="font-semibold text-slate-500">
+                          “{query.trim()}”
+                        </span>
+                        .
+                        <button
+                          onClick={() => setQuery("")}
+                          className="mt-1 block w-full text-indigo-600 underline hover:text-indigo-500"
+                        >
+                          Clear search
+                        </button>
+                      </>
+                    ) : (
+                      "No items yet — add one with “+ Add item”."
+                    )}
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
