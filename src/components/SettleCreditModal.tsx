@@ -47,7 +47,7 @@ export default function SettleCreditModal({
   }
 
   const inputCls =
-    "w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200";
+    "w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200";
 
   return (
     <Modal
@@ -63,19 +63,19 @@ export default function SettleCreditModal({
             key={m}
             type="button"
             onClick={() => setMethod(m)}
-            className={`rounded-xl border-2 px-2 py-2 text-sm font-medium transition ${
+            className={`rounded-md border px-2 py-2 text-sm font-medium transition ${
               method === m
-                ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                : "border-slate-200 text-slate-500 hover:bg-slate-50"
+                ? "border-blue-600 bg-blue-50 text-blue-700"
+                : "border-slate-300 text-slate-600 hover:bg-slate-50"
             }`}
           >
-            {m === "Split" ? "Both" : m}
+            {m}
           </button>
         ))}
       </div>
 
       {method === "Split" && (
-        <div className="mb-3 rounded-xl border border-slate-200 p-3">
+        <div className="mb-3 rounded-md border border-slate-200 p-3">
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="mb-1 block text-xs font-medium text-slate-500">
@@ -125,7 +125,7 @@ export default function SettleCreditModal({
       )}
 
       {error && (
-        <div className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
           {error}
         </div>
       )}
@@ -134,7 +134,7 @@ export default function SettleCreditModal({
         <button
           type="button"
           onClick={onClose}
-          className="flex-1 rounded-lg border border-slate-300 py-2.5 font-medium text-slate-600 transition hover:bg-slate-50"
+          className="flex-1 rounded-md border border-slate-300 py-2 font-medium text-slate-600 transition hover:bg-slate-50"
         >
           Cancel
         </button>
@@ -142,7 +142,7 @@ export default function SettleCreditModal({
           type="button"
           onClick={() => void submit()}
           disabled={!splitOk || busy}
-          className="flex-[2] rounded-lg bg-emerald-600 py-2.5 font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex-[2] rounded-md bg-emerald-600 py-2 font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {busy ? "Settling…" : `Mark Paid · ${npr(total)}`}
         </button>

@@ -17,17 +17,17 @@ export default function ActiveTables({
 }) {
   return (
     <aside className="flex w-64 flex-col border-r border-slate-200 bg-white">
-      <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2.5">
+      <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2">
         <h2 className="text-sm font-semibold text-slate-700">
           Open Tabs
-          <span className="ml-1.5 rounded-full bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-500">
+          <span className="ml-1.5 rounded-md bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-500">
             {tabs.length}
           </span>
         </h2>
         <button
           onClick={onNew}
           title="Open new tab"
-          className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 text-lg font-bold leading-none text-white transition hover:bg-indigo-500"
+          className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-700 text-lg font-bold leading-none text-white transition hover:bg-blue-600"
         >
           +
         </button>
@@ -56,23 +56,23 @@ export default function ActiveTables({
                   onSelect(tab.id);
                 }
               }}
-              className={`w-full cursor-pointer rounded-xl border px-3 py-2.5 text-left transition focus:outline-none focus:ring-2 focus:ring-indigo-300 ${
+              className={`w-full cursor-pointer rounded-md border px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-blue-300 ${
                 selected
-                  ? "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200"
-                  : "border-slate-200 bg-white hover:border-indigo-300 hover:bg-slate-50"
+                  ? "border-blue-500 bg-blue-50 ring-2 ring-blue-200"
+                  : "border-slate-200 bg-white hover:border-blue-300 hover:bg-slate-50"
               }`}
             >
               <div className="flex items-center justify-between gap-1">
                 <span
                   className={`truncate text-sm font-semibold ${
-                    selected ? "text-indigo-700" : "text-slate-800"
+                    selected ? "text-blue-700" : "text-slate-800"
                   }`}
                 >
                   {tab.tableIdentifier}
                 </span>
                 <span className="flex shrink-0 items-center gap-1">
                   {tab.itemCount > 0 && (
-                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500">
+                    <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500">
                       {tab.itemCount}
                     </span>
                   )}

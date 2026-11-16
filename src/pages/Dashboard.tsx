@@ -182,11 +182,11 @@ export default function Dashboard({
   }
 
   return (
-    <div className="flex h-full flex-col bg-slate-100">
+    <div className="flex h-full flex-col bg-white">
       {/* Top bar */}
-      <header className="flex items-center justify-between bg-slate-900 px-4 py-2.5 text-white">
+      <header className="flex items-center justify-between bg-slate-900 px-4 py-2 text-white">
         <div className="flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-indigo-600 text-sm font-bold">
+          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-700 text-sm font-bold">
             रु
           </span>
           <span className="font-semibold">Billing POS</span>
@@ -211,9 +211,9 @@ export default function Dashboard({
               <button
                 key={id}
                 onClick={() => setPage(id)}
-                className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+                className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
                   safePage === id
-                    ? "bg-slate-700 text-white"
+                    ? "bg-blue-700 text-white"
                     : "text-slate-300 hover:bg-slate-800 hover:text-white"
                 }`}
               >
@@ -324,7 +324,7 @@ export default function Dashboard({
       {/* Flash toast */}
       {flash && (
         <div
-          className={`fixed right-4 top-4 z-[60] max-w-sm rounded-xl px-4 py-2.5 text-sm font-medium text-white shadow-xl ${
+          className={`fixed right-4 top-4 z-[60] max-w-sm rounded-md px-4 py-2 text-sm font-medium text-white ${
             flash.kind === "error" ? "bg-red-600" : "bg-emerald-600"
           }`}
         >

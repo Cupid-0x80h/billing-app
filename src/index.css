@@ -5,3 +5,8 @@ body,
 #root {
   height: 100%;
 }
+
+/* Utilitarian POS: every number aligns in a column (prices, totals, quantities). */
+body {
+  font-variant-numeric: tabular-nums;
+}

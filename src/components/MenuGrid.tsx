@@ -30,7 +30,7 @@ export default function MenuGrid({
   );
 
   return (
-    <main className="flex min-w-0 flex-1 flex-col bg-slate-100">
+    <main className="flex min-w-0 flex-1 flex-col bg-white">
       {/* Search + category chips */}
       <div className="flex items-center gap-2 border-b border-slate-200 bg-white px-3 py-2">
         <div className="relative shrink-0">
@@ -52,19 +52,22 @@ export default function MenuGrid({
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search dish…"
             aria-label="Search menu dishes"
-            className="w-36 rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-8 pr-2 text-sm outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100 sm:w-48"
+            className="w-36 rounded-md border border-slate-200 bg-slate-50 py-1.5 pl-8 pr-2 text-sm outline-none transition focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 sm:w-48"
           />
         </div>
 
-        <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto">
-          {["All", ...categories].map((c) => (
+        <div className="flex min-w-0 flex-1 items-center overflow-x-auto rounded-md border border-slate-300 bg-white">
+          {["All", ...categories].map((c, i) => (
             <button
               key={c}
               onClick={() => onCategory(c)}
-              className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition ${
+              aria-pressed={category === c}
+              className={`whitespace-nowrap px-2.5 py-1 text-sm font-medium transition ${
+                i > 0 ? "border-l border-slate-300" : ""
+              } ${
                 category === c
-                  ? "bg-indigo-600 text-white"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  ? "bg-blue-700 text-white"
+                  : "text-slate-600 hover:bg-slate-50"
               }`}
             >
               {c}
@@ -88,14 +91,14 @@ export default function MenuGrid({
               key={item.id}
               disabled={!canAdd}
               onClick={() => onAdd(item)}
-              className="group rounded-xl border border-slate-200 bg-white p-3 text-left transition hover:border-indigo-400 hover:shadow-sm active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:shadow-none"
+              className="group rounded-md border border-slate-200 bg-white p-2.5 text-left transition hover:border-blue-400 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200"
             >
               <div className="text-sm font-medium leading-snug text-slate-800">
                 {item.name}
               </div>
               <div className="mt-1.5 flex items-center justify-between">
                 <span className="text-xs text-slate-400">{item.category}</span>
-                <span className="text-sm font-semibold text-indigo-600">
+                <span className="text-sm font-semibold text-blue-700">
                   {npr(item.price)}
                 </span>
               </div>
@@ -119,7 +122,7 @@ export default function MenuGrid({
                       setQuery("");
                       onCategory("All");
                     }}
-                    className="mt-2 block w-full text-indigo-600 underline hover:text-indigo-500"
+                    className="mt-2 block w-full text-blue-700 underline hover:text-blue-500"
                   >
                     Clear search
                   </button>

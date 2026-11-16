@@ -92,7 +92,7 @@ export default function Settings({
   }
 
   return (
-    <div className="min-h-0 flex-1 overflow-auto bg-slate-100 p-6">
+    <div className="min-h-0 flex-1 overflow-auto bg-white p-6">
       <div className="mx-auto max-w-2xl space-y-4">
         <div>
           <h2 className="text-lg font-semibold text-slate-900">Settings & Data</h2>
@@ -102,7 +102,7 @@ export default function Settings({
         </div>
 
         {/* Database info */}
-        <div className="rounded-xl border border-slate-200 bg-white p-4">
+        <div className="rounded-md border border-slate-200 bg-white p-4">
           <div className="text-xs font-medium uppercase tracking-wide text-slate-400">
             Database
           </div>
@@ -115,7 +115,7 @@ export default function Settings({
         </div>
 
         {/* Backup */}
-        <div className="rounded-xl border border-slate-200 bg-white p-4">
+        <div className="rounded-md border border-slate-200 bg-white p-4">
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="font-semibold text-slate-800">Backup</div>
@@ -127,7 +127,7 @@ export default function Settings({
             <button
               onClick={() => void doBackup()}
               disabled={busy !== null}
-              className="shrink-0 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50"
+              className="shrink-0 rounded-md bg-blue-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-600 disabled:opacity-50"
             >
               {busy === "backup" ? "Backing up…" : "Backup now…"}
             </button>
@@ -135,7 +135,7 @@ export default function Settings({
         </div>
 
         {/* Restore */}
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="font-semibold text-amber-800">Restore</div>
@@ -147,7 +147,7 @@ export default function Settings({
             <button
               onClick={() => void pickRestore()}
               disabled={busy !== null}
-              className="shrink-0 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-500 disabled:opacity-50"
+              className="shrink-0 rounded-md bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-500 disabled:opacity-50"
             >
               {busy === "restore" ? "Restoring…" : "Restore from file…"}
             </button>
@@ -164,7 +164,7 @@ export default function Settings({
           <p className="mb-1 text-sm text-slate-600">
             The current database will be replaced with:
           </p>
-          <p className="mb-4 break-all rounded-lg bg-slate-100 p-2.5 font-mono text-xs text-slate-700">
+          <p className="mb-4 break-all rounded-md bg-slate-100 p-2.5 font-mono text-xs text-slate-700">
             {confirmPath}
           </p>
           <p className="mb-4 text-sm text-red-600">
@@ -174,7 +174,7 @@ export default function Settings({
             <button
               type="button"
               onClick={() => setConfirmPath(null)}
-              className="flex-1 rounded-lg border border-slate-300 py-2.5 font-medium text-slate-600 transition hover:bg-slate-50"
+              className="flex-1 rounded-md border border-slate-300 py-2 font-medium text-slate-600 transition hover:bg-slate-50"
             >
               Cancel
             </button>
@@ -182,7 +182,7 @@ export default function Settings({
               type="button"
               onClick={() => void doRestore()}
               disabled={busy !== null}
-              className="flex-1 rounded-lg bg-red-600 py-2.5 font-semibold text-white transition hover:bg-red-500 disabled:opacity-50"
+              className="flex-1 rounded-md bg-red-600 py-2 font-semibold text-white transition hover:bg-red-500 disabled:opacity-50"
             >
               {busy === "restore" ? "Restoring…" : "Yes, restore"}
             </button>

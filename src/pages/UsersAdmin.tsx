@@ -55,29 +55,29 @@ export default function UsersAdmin({
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-slate-100">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2.5">
+    <div className="flex min-h-0 flex-1 flex-col bg-white">
+      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2">
         <div>
           <h2 className="text-sm font-semibold text-slate-700">User Management</h2>
           <p className="text-xs text-slate-400">{users.length} accounts</p>
         </div>
         <button
           onClick={() => setAdding(true)}
-          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-indigo-500"
+          className="rounded-md bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-600"
         >
           + Add user
         </button>
       </div>
 
       <div className="min-h-0 flex-1 overflow-auto p-4">
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+        <div className="overflow-hidden rounded-md border border-slate-200 bg-white">
           <table className="w-full text-left text-sm">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
               <tr>
-                <th className="px-3 py-2.5 font-medium">Username</th>
-                <th className="px-3 py-2.5 font-medium">Role</th>
-                <th className="px-3 py-2.5 font-medium">Password status</th>
-                <th className="px-3 py-2.5 text-right font-medium">Actions</th>
+                <th className="px-3 py-2 font-medium">Username</th>
+                <th className="px-3 py-2 font-medium">Role</th>
+                <th className="px-3 py-2 font-medium">Password status</th>
+                <th className="px-3 py-2 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -111,13 +111,13 @@ export default function UsersAdmin({
                       <div className="flex justify-end gap-1.5">
                         <button
                           onClick={() => void toggleRole(u)}
-                          className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-100"
+                          className="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-100"
                         >
                           Make {u.role === "admin" ? "staff" : "admin"}
                         </button>
                         <button
                           onClick={() => setResetting(u)}
-                          className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-100"
+                          className="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-100"
                         >
                           Reset password
                         </button>
@@ -125,13 +125,13 @@ export default function UsersAdmin({
                           <span className="inline-flex items-center gap-1">
                             <button
                               onClick={() => void doDelete(u)}
-                              className="rounded-lg bg-red-600 px-2 py-1 text-xs font-semibold text-white transition hover:bg-red-500"
+                              className="rounded-md bg-red-600 px-2 py-1 text-xs font-semibold text-white transition hover:bg-red-500"
                             >
                               Sure? Yes
                             </button>
                             <button
                               onClick={() => setConfirmDeleteId(null)}
-                              className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-medium text-slate-500 hover:bg-slate-100"
+                              className="rounded-md border border-slate-200 px-2 py-1 text-xs font-medium text-slate-500 hover:bg-slate-100"
                             >
                               No
                             </button>
@@ -141,7 +141,7 @@ export default function UsersAdmin({
                             disabled={isSelf}
                             onClick={() => setConfirmDeleteId(u.id)}
                             title={isSelf ? "You cannot delete your own account" : undefined}
-                            className="rounded-lg border border-red-200 px-2.5 py-1 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+                            className="rounded-md border border-red-200 px-2.5 py-1 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
                           >
                             Delete
                           </button>
@@ -203,7 +203,7 @@ function AddUserModal({
   const [busy, setBusy] = useState(false);
 
   const inputCls =
-    "w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200";
+    "w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200";
 
   async function submit() {
     if (busy) return;
@@ -250,10 +250,10 @@ function AddUserModal({
                 key={r}
                 type="button"
                 onClick={() => setRole(r)}
-                className={`rounded-xl border-2 px-2 py-2 text-sm font-medium transition ${
+                className={`rounded-md border px-2 py-2 text-sm font-medium transition ${
                   role === r
-                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                    : "border-slate-200 text-slate-500 hover:bg-slate-50"
+                    ? "border-blue-600 bg-blue-50 text-blue-700"
+                    : "border-slate-300 text-slate-600 hover:bg-slate-50"
                 }`}
               >
                 {r === "admin" ? "Admin — full access" : "Staff — POS only"}
@@ -263,14 +263,14 @@ function AddUserModal({
         </div>
 
         {error && (
-          <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>
+          <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>
         )}
 
         <div className="flex gap-2 pt-1">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-lg border border-slate-300 py-2.5 font-medium text-slate-600 transition hover:bg-slate-50"
+            className="flex-1 rounded-md border border-slate-300 py-2 font-medium text-slate-600 transition hover:bg-slate-50"
           >
             Cancel
           </button>
@@ -278,7 +278,7 @@ function AddUserModal({
             type="button"
             onClick={() => void submit()}
             disabled={busy || !username.trim() || !password}
-            className="flex-1 rounded-lg bg-indigo-600 py-2.5 font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50"
+            className="flex-1 rounded-md bg-blue-700 py-2 font-semibold text-white transition hover:bg-blue-600 disabled:opacity-50"
           >
             {busy ? "Creating…" : "Create user"}
           </button>
@@ -328,16 +328,16 @@ function ResetPasswordModal({
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="New temporary password"
-        className="mb-3 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+        className="mb-3 w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
       />
       {error && (
-        <div className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>
+        <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>
       )}
       <div className="flex gap-2">
         <button
           type="button"
           onClick={onClose}
-          className="flex-1 rounded-lg border border-slate-300 py-2.5 font-medium text-slate-600 transition hover:bg-slate-50"
+          className="flex-1 rounded-md border border-slate-300 py-2 font-medium text-slate-600 transition hover:bg-slate-50"
         >
           Cancel
         </button>
@@ -345,7 +345,7 @@ function ResetPasswordModal({
           type="button"
           onClick={() => void submit()}
           disabled={busy || password.length < 4}
-          className="flex-1 rounded-lg bg-indigo-600 py-2.5 font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50"
+          className="flex-1 rounded-md bg-blue-700 py-2 font-semibold text-white transition hover:bg-blue-600 disabled:opacity-50"
         >
           {busy ? "Saving…" : "Reset password"}
         </button>

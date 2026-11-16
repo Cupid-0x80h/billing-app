@@ -34,10 +34,10 @@ export default function NewTabModal({
           onChange={(e) => setName(e.target.value)}
           placeholder="Table identifier"
           maxLength={40}
-          className="mb-3 w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+          className="mb-3 w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
         />
         {error && (
-          <div className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+          <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
             {error}
           </div>
         )}
@@ -45,14 +45,14 @@ export default function NewTabModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-lg border border-slate-300 py-2.5 font-medium text-slate-600 transition hover:bg-slate-50"
+            className="flex-1 rounded-md border border-slate-300 py-2 font-medium text-slate-600 transition hover:bg-slate-50"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={busy || !name.trim()}
-            className="flex-1 rounded-lg bg-indigo-600 py-2.5 font-medium text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex-1 rounded-md bg-blue-700 py-2 font-medium text-white transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {busy ? "Opening…" : "Open tab"}
           </button>

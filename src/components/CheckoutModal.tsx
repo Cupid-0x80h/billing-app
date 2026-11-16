@@ -67,7 +67,7 @@ export default function CheckoutModal({
   }
 
   const inputCls =
-    "w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200";
+    "w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200";
 
   return (
     <Modal
@@ -83,15 +83,15 @@ export default function CheckoutModal({
               key={s}
               type="button"
               onClick={() => setStatus(s)}
-              className={`rounded-xl border-2 px-3 py-2.5 text-sm font-semibold transition ${
+              className={`rounded-md border px-3 py-2 text-sm font-semibold transition ${
                 status === s
                   ? s === "Paid"
-                    ? "border-emerald-500 bg-emerald-50 text-emerald-700"
+                    ? "border-emerald-600 bg-emerald-50 text-emerald-700"
                     : "border-amber-500 bg-amber-50 text-amber-700"
-                  : "border-slate-200 text-slate-500 hover:bg-slate-50"
+                  : "border-slate-300 text-slate-600 hover:bg-slate-50"
               }`}
             >
-              {s === "Paid" ? "✓ Paid" : "⏳ Credit (Udharo)"}
+              {s === "Paid" ? "Paid" : "Credit (Udharo)"}
             </button>
           ))}
         </div>
@@ -100,43 +100,36 @@ export default function CheckoutModal({
           <>
             {/* Method (REQ-5.2) */}
             <div className="mb-3 grid grid-cols-3 gap-2">
-              {(
-                [
-                  ["Cash", "💵"],
-                  ["Online", "📱"],
-                  ["Split", "↔️"],
-                ] as [PayMethod, string][]
-              ).map(([m, icon]) => (
+              {(["Cash", "Online", "Split"] as PayMethod[]).map((m) => (
                 <button
                   key={m}
                   type="button"
                   onClick={() => setMethod(m)}
-                  className={`rounded-xl border-2 px-2 py-2 text-sm font-medium transition ${
+                  className={`rounded-md border px-2 py-2 text-sm font-medium transition ${
                     method === m
-                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                      : "border-slate-200 text-slate-500 hover:bg-slate-50"
+                      ? "border-blue-600 bg-blue-50 text-blue-700"
+                      : "border-slate-300 text-slate-600 hover:bg-slate-50"
                   }`}
                 >
-                  <div className="text-lg">{icon}</div>
-                  {m === "Split" ? "Both" : m}
+                  {m}
                 </button>
               ))}
             </div>
 
             {method === "Cash" && (
-              <div className="mb-3 rounded-xl bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
+              <div className="mb-3 rounded-md bg-slate-50 px-3 py-2 text-sm text-slate-600">
                 Full amount in cash: <b>{npr(total)}</b>
               </div>
             )}
             {method === "Online" && (
-              <div className="mb-3 rounded-xl bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
+              <div className="mb-3 rounded-md bg-slate-50 px-3 py-2 text-sm text-slate-600">
                 Full amount via QR / wallet: <b>{npr(total)}</b>
               </div>
             )}
 
             {/* Split inputs (REQ-5.2 Both) */}
             {method === "Split" && (
-              <div className="mb-3 rounded-xl border border-slate-200 p-3">
+              <div className="mb-3 rounded-md border border-slate-200 p-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="mb-1 block text-xs font-medium text-slate-500">
@@ -209,7 +202,7 @@ export default function CheckoutModal({
         )}
 
         {error && (
-          <div className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+          <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
             {error}
           </div>
         )}
@@ -218,14 +211,14 @@ export default function CheckoutModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-lg border border-slate-300 py-2.5 font-medium text-slate-600 transition hover:bg-slate-50"
+            className="flex-1 rounded-md border border-slate-300 py-2 font-medium text-slate-600 transition hover:bg-slate-50"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={!canSubmit}
-            className={`flex-[2] rounded-lg py-2.5 font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40 ${
+            className={`flex-[2] rounded-md py-2 font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40 ${
               status === "Paid"
                 ? "bg-emerald-600 hover:bg-emerald-500"
                 : "bg-amber-500 hover:bg-amber-400"

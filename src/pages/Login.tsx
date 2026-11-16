@@ -25,13 +25,13 @@ export default function Login({ onLogin }: { onLogin: (u: SessionUser) => void }
   }
 
   return (
-    <div className="flex min-h-full items-center justify-center bg-slate-900 p-4">
+    <div className="flex min-h-full items-center justify-center bg-white p-4">
       <form
         onSubmit={submit}
-        className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl"
+        className="w-full max-w-sm rounded-md border border-slate-200 bg-white p-8"
       >
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 text-xl font-bold text-white">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-md bg-blue-700 text-xl font-bold text-white">
             रु
           </div>
           <h1 className="text-xl font-semibold text-slate-900">Billing POS</h1>
@@ -45,7 +45,7 @@ export default function Login({ onLogin }: { onLogin: (u: SessionUser) => void }
           autoFocus
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mb-4 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+          className="mb-4 w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
           placeholder="Enter username"
           autoComplete="username"
         />
@@ -57,13 +57,13 @@ export default function Login({ onLogin }: { onLogin: (u: SessionUser) => void }
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-4 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+          className="mb-4 w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
           placeholder="Enter password"
           autoComplete="current-password"
         />
 
         {error && (
-          <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+          <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
             {error}
           </div>
         )}
@@ -71,7 +71,7 @@ export default function Login({ onLogin }: { onLogin: (u: SessionUser) => void }
         <button
           type="submit"
           disabled={busy || !username || !password}
-          className="w-full rounded-lg bg-indigo-600 py-2.5 font-medium text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full rounded-md bg-blue-700 py-2 font-medium text-white transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {busy ? "Signing in…" : "Sign in"}
         </button>

@@ -21,9 +21,6 @@ export default function CartPanel({
   if (!tab) {
     return (
       <aside className="flex w-80 flex-col items-center justify-center border-l border-slate-200 bg-white p-6 text-center">
-        <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-2xl">
-          🧾
-        </div>
         <p className="text-sm font-medium text-slate-600">No tab selected</p>
         <p className="mt-1 text-xs text-slate-400">
           Pick a tab on the left, or open a new one.
@@ -40,7 +37,7 @@ export default function CartPanel({
           <h2 className="truncate text-base font-semibold text-slate-900">
             {tab.tableIdentifier}
           </h2>
-          <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-600">
+          <span className="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
             Open
           </span>
         </div>
@@ -63,7 +60,7 @@ export default function CartPanel({
           {lines.map((line) => (
             <div
               key={line.lineId}
-              className="rounded-xl border border-slate-200 p-2.5"
+              className="rounded-md border border-slate-200 p-2.5"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
@@ -93,7 +90,7 @@ export default function CartPanel({
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => onQuantity(line, line.quantity - 1)}
-                    className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-100"
+                    className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition hover:bg-slate-100"
                   >
                     −
                   </button>
@@ -102,7 +99,7 @@ export default function CartPanel({
                   </span>
                   <button
                     onClick={() => onQuantity(line, line.quantity + 1)}
-                    className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-100"
+                    className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition hover:bg-slate-100"
                   >
                     +
                   </button>
@@ -125,7 +122,7 @@ export default function CartPanel({
         <button
           onClick={onCheckout}
           disabled={lines.length === 0}
-          className="w-full rounded-xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40"
+          className="w-full rounded-md bg-blue-700 py-2.5 font-semibold text-white transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Checkout · {npr(total)}
         </button>

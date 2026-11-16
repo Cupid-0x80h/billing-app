@@ -37,7 +37,7 @@ export default function ConfirmModal({
       <div className="mb-4 text-sm text-slate-600">{message}</div>
 
       {error && (
-        <div className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
           {error}
         </div>
       )}
@@ -46,7 +46,7 @@ export default function ConfirmModal({
         <button
           type="button"
           onClick={onClose}
-          className="flex-1 rounded-lg border border-slate-300 py-2.5 font-medium text-slate-600 transition hover:bg-slate-50"
+          className="flex-1 rounded-md border border-slate-300 py-2 font-medium text-slate-600 transition hover:bg-slate-50"
         >
           Cancel
         </button>
@@ -54,7 +54,7 @@ export default function ConfirmModal({
           type="button"
           onClick={() => void confirm()}
           disabled={busy}
-          className={`flex-1 rounded-lg py-2.5 font-semibold text-white transition disabled:opacity-50 ${
+          className={`flex-1 rounded-md py-2 font-semibold text-white transition disabled:opacity-50 ${
             danger
               ? "bg-red-600 hover:bg-red-500"
               : "bg-emerald-600 hover:bg-emerald-500"
